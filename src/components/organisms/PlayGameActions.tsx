@@ -20,12 +20,7 @@ const PlayGameActions = React.forwardRef<HTMLDivElement, PlayGameActionsProps>(
     };
 
     return (
-      <Grid
-        ref={ref}
-        container
-        spacing={2}
-        justifyContent="center"
-      >
+      <Grid ref={ref} container spacing={2} justifyContent="center">
         <CoreButton style={{ marginTop: 32 }} onClick={onValidate}>
           <TaskAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
           Validate
