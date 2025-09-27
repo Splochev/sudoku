@@ -12,16 +12,16 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { Grid } from "@mui/material";
 
 const NUMBER_OPTIONS = [
-  { id: 1, label: "1", isComponent: false },
-  { id: 2, label: "2", isComponent: false },
-  { id: 3, label: "3", isComponent: false },
-  { id: 4, label: "4", isComponent: false },
-  { id: 5, label: "5", isComponent: false },
-  { id: 6, label: "6", isComponent: false },
-  { id: 7, label: "7", isComponent: false },
-  { id: 8, label: "8", isComponent: false },
-  { id: 9, label: "9", isComponent: false },
-  { id: "clear", label: <ClearIcon sx={{ fontSize: "1rem" }} />, isComponent: true },
+  { id: 1, label: "1" },
+  { id: 2, label: "2" },
+  { id: 3, label: "3" },
+  { id: 4, label: "4" },
+  { id: 5, label: "5" },
+  { id: 6, label: "6" },
+  { id: 7, label: "7" },
+  { id: 8, label: "8" },
+  { id: 9, label: "9" },
+  { id: "clear", label: <ClearIcon sx={{ fontSize: "1rem" }} />},
 ];
 
 const PlayGame = () => {
