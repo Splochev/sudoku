@@ -61,7 +61,6 @@ const PlayGame = () => {
       const response = await solveSudokuBoard({ board: initialBoard });
       dispatch(setSolution(response.solution));
       dispatch(setStatus(response.status));
-      toastifyStatus(response.status);
     } catch (error) {
       console.error("Error fetching Sudoku board:", error);
       toast.error("Failed to start game. Please try again.");
@@ -75,22 +74,17 @@ const PlayGame = () => {
       setValidatingLoading(true);
       const response = await validateSudokuBoard({ board: solutionBoard });
       dispatch(setStatus(response.status));
-      toastifyStatus(response.status);
+
+      if (response.status === "broken") {
+        setTimeout(() => {
+          dispatch(setStatus("solving"));
+        }, 3000);
+      }
     } catch (error) {
       console.error("Error fetching Sudoku board:", error);
       toast.error("Failed to validate game. Please try again.");
     } finally {
       setValidatingLoading(false);
-    }
-  };
-
-  const toastifyStatus = (status: string) => {
-    if (status === "broken") {
-      toast.error("Some numbers are incorrect. Keep trying!");
-    } else if (status === "solved") {
-      toast.success("Congratulations! You solved the puzzle!");
-    } else if (status === "unsolvable") {
-      toast.error("The puzzle is unsolvable. Please try a different one!");
     }
   };
 
