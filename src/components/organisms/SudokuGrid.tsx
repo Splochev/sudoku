@@ -80,6 +80,14 @@ const SudokuGrid = ({
           const value = solution?.[rowIdx]?.[colIdx] || "";
           // Disable all cells if game is over
           const isGameOver = status === "solved" || status === "unsolvable";
+          // Highlight if in selected row or column
+          const isHighlighted =
+            (numberToFill.row === rowIdx && numberToFill.row > -1) ||
+            (numberToFill.col === colIdx && numberToFill.col > -1);
+          // Add a thin border to every 3x3 square
+          const blockSize = 3;
+          const isBlockRight = (colIdx + 1) % blockSize === 0 && colIdx !== gridSize - 1;
+          const isBlockBottom = (rowIdx + 1) % blockSize === 0 && rowIdx !== gridSize - 1;
           return (
             <Button
               key={`${rowIdx}-${colIdx}`}
@@ -114,12 +122,16 @@ const SudokuGrid = ({
                   focusedCell.row === rowIdx &&
                   focusedCell.col === colIdx
                     ? theme.palette.action.selected
+                    : isHighlighted
+                    ? theme.palette.action.hover
                     : isInitial
                     ? `linear-gradient(180deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`
                     : `linear-gradient(180deg, ${theme.palette.background.default} 0%, ${theme.palette.background.paper} 100%)`,
                 border: isInitial
                   ? `2px solid ${theme.palette.primary.light}`
                   : `2px solid #222`,
+                borderRight: isBlockRight ? `2px solid ${theme.palette.secondary.main}` : undefined,
+                borderBottom: isBlockBottom ? `2px solid ${theme.palette.secondary.main}` : undefined,
                 borderRadius: 0.5,
                 transition:
                   "background 0.2s, color 0.2s, font-size 0.3s cubic-bezier(.4,2,.6,1)",
@@ -130,6 +142,8 @@ const SudokuGrid = ({
                   focusedCell.row === rowIdx &&
                   focusedCell.col === colIdx
                     ? 2
+                    : isHighlighted
+                    ? 1.5
                     : 1,
                 boxShadow:
                   focusedCell &&
@@ -138,6 +152,8 @@ const SudokuGrid = ({
                     ? `0 0 0 3px #fff inset`
                     : isInitial
                     ? `0 2px 0 ${theme.palette.primary.light}, 0 4px 0 #000`
+                    : isHighlighted
+                    ? `0 0 8px 2px ${theme.palette.action.hover}`
                     : `0 2px 0 #222`,
                 "&:hover": {
                   background:
@@ -145,6 +161,8 @@ const SudokuGrid = ({
                     focusedCell.row === rowIdx &&
                     focusedCell.col === colIdx
                       ? theme.palette.action.selected
+                      : isHighlighted
+                      ? theme.palette.action.hover
                       : isInitial
                       ? `linear-gradient(180deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`
                       : `linear-gradient(180deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
@@ -153,6 +171,8 @@ const SudokuGrid = ({
                     focusedCell.row === rowIdx &&
                     focusedCell.col === colIdx
                       ? `0 0 0 3px #fff inset`
+                      : isHighlighted
+                      ? `0 0 8px 2px ${theme.palette.action.hover}`
                       : null,
                 },
               }}
