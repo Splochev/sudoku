@@ -14,6 +14,7 @@ import theme from "../../theme";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { getSudokuBoard } from "../../services/sudoku.service";
 import { toast } from "react-toastify";
+import { Grid } from "@mui/material";
 
 const StartGame = () => {
   const [difficulty, setDifficulty] = useState<string>(DIFFICULTIES[0].id);
@@ -46,15 +47,24 @@ const StartGame = () => {
   return (
     <Box
       sx={{
-        width: { xs: "95vw", sm: "80vw", md: "60vw", lg: "40vw" },
         maxWidth: 600,
         bgcolor: theme.palette.background.paper,
         borderRadius: 4,
         boxShadow: 3,
-        p: { xs: 2, sm: 4 },
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        padding: 4,
+        "@media (max-width:700px)": {
+          width: "100vw !important",
+          minWidth: "100vw !important",
+          height: "100vh !important",
+          minHeight: "100vh !important",
+          overflow: "hidden",
+          borderRadius: 0,
+          justifyContent: "center",
+          alignItems: "center",
+        },
       }}
     >
       <Typography variant="h3" color="primary" gutterBottom fontWeight={700}>
@@ -68,11 +78,20 @@ const StartGame = () => {
       >
         Welcome! Choose your game difficulty and start playing
       </Typography>
-      <CoreButtonGroup
-        buttonLabels={DIFFICULTIES}
-        onChange={(value) => setDifficulty(String(value))}
-        value={difficulty}
-      />
+      <Grid
+        sx={{
+          width: "100%",
+          "@media (max-width:700px)": {
+            width: "80%",
+          },
+        }}
+      >
+        <CoreButtonGroup
+          buttonLabels={DIFFICULTIES}
+          onChange={(value) => setDifficulty(String(value))}
+          value={difficulty}
+        />
+      </Grid>
       <CoreButton
         style={{ marginTop: 32 }}
         onClick={onStartGame}

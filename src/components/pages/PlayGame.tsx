@@ -133,7 +133,12 @@ const PlayGame = () => {
         "@media (max-width:700px)": {
           width: "100vw !important",
           minWidth: "100vw !important",
+          height: "100vh !important",
+          minHeight: "100vh !important",
+          overflow: "hidden",
           borderRadius: 0,
+          justifyContent: "center",
+          alignItems: "center",
         },
         bgcolor: theme.palette.background.paper,
         borderRadius: 4,
