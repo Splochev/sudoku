@@ -1,11 +1,9 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import theme from "../../theme";
 import PlayGameActions from "../organisms/PlayGameActions";
 import type { RootState } from "../../types/board.types";
-import DifficultyDisplay from "../atoms/DifficultyDisplay";
-import { Grid } from "@mui/material";
+import PlayGameHeader from "../atoms/DifficultyDisplay";
 
 const PlayGame = () => {
   const difficulty = useSelector((state: RootState) => state.board.difficulty);
@@ -29,12 +27,7 @@ const PlayGame = () => {
         alignItems: "center",
       }}
     >
-      <Grid container justifyContent="center" alignItems="start" gap={2}>
-        <Typography variant="h3" color="primary" gutterBottom fontWeight={700}>
-          Sudoku
-        </Typography>
-        <DifficultyDisplay difficulty={difficulty} />
-      </Grid>
+      <PlayGameHeader difficulty={difficulty} />
       <PlayGameActions onSolve={onSolve} onValidate={onValidate} />
     </Box>
   );
