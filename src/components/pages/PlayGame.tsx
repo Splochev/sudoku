@@ -3,28 +3,70 @@ import { useSelector } from "react-redux";
 import theme from "../../theme";
 import PlayGameActions from "../organisms/PlayGameActions";
 import type { RootState } from "../../types/board.types";
-import PlayGameHeader from "../atoms/DifficultyDisplay";
+import PlayGameHeader from "../organisms/PlayGameHeader";
+import { useRef, useState, useLayoutEffect } from "react";
+import type { BoardNumber } from "../organisms/ChooseBoardNumber";
+import CoreButtonGroup from "../atoms/CoreButtonGroup";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import ClearIcon from "@mui/icons-material/Clear";
+import { Grid } from "@mui/material";
+
+const NUMBER_OPTIONS = [
+  { id: 1, label: "1", isComponent: false },
+  { id: 2, label: "2", isComponent: false },
+  { id: 3, label: "3", isComponent: false },
+  { id: 4, label: "4", isComponent: false },
+  { id: 5, label: "5", isComponent: false },
+  { id: 6, label: "6", isComponent: false },
+  { id: 7, label: "7", isComponent: false },
+  { id: 8, label: "8", isComponent: false },
+  { id: 9, label: "9", isComponent: false },
+  { id: "clear", label: <ClearIcon sx={{ fontSize: "1rem" }} />, isComponent: true },
+];
 
 const PlayGame = () => {
+  const isMdDown = useMediaQuery("(max-width:480px)");
+  const playGameActionsRef = useRef<HTMLDivElement>(null);
   const difficulty = useSelector((state: RootState) => state.board.difficulty);
-  const initialBoard = useSelector(
-    (state: RootState) => state.board.initialBoard
-  );
-  const solution = useSelector((state: RootState) => state.board.solution);
+  const [actionsWidth, setActionsWidth] = useState<number | undefined>(undefined);
+  const [numberToFill, setNumberToFill] = useState<BoardNumber>({row: -1, col: -1, value: -1});
 
   const onSolve = async () => {};
   const onValidate = async () => {};
 
+  const onChange = (value: string | number) => {
+    if (value === "clear") {
+      setNumberToFill({ row: -1, col: -1, value: -1 });
+      return;
+    }
+    setNumberToFill((prev) => ({ ...prev, value: Number(value) }));
+  };
+
+  useLayoutEffect(() => {
+    if (playGameActionsRef.current) {
+      setActionsWidth(playGameActionsRef.current.offsetWidth);
+    }
+    const handleResize = () => {
+      if (playGameActionsRef.current) {
+        setActionsWidth(playGameActionsRef.current.offsetWidth);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const disabled = numberToFill.col === -1 || numberToFill.row === -1;
+  const numberOptions = isMdDown ? [NUMBER_OPTIONS.slice(0, 5), NUMBER_OPTIONS.slice(5)] : [NUMBER_OPTIONS];
+
   return (
     <Box
       sx={{
-        width: "650px",
+        maxWidth: "650px",
         "@media (max-width:700px)": {
           width: "100vw !important",
           minWidth: "100vw !important",
           borderRadius: 0,
         },
-        maxWidth: 600,
         bgcolor: theme.palette.background.paper,
         borderRadius: 4,
         boxShadow: 3,
@@ -35,7 +77,29 @@ const PlayGame = () => {
       }}
     >
       <PlayGameHeader difficulty={difficulty} />
-      <PlayGameActions onSolve={onSolve} onValidate={onValidate} />
+      <Grid
+        container
+        sx={{
+          gap: 2,
+          flexDirection: isMdDown ? "column" : "row",
+        }}
+        style={actionsWidth ? { width: actionsWidth } : {}}
+      >
+        {numberOptions.map((options, index) => (
+          <CoreButtonGroup
+            key={index}
+            disabled={disabled}
+            buttonLabels={options}
+            onChange={onChange}
+            value={numberToFill.value}
+          />
+        ))}
+      </Grid>
+      <PlayGameActions
+        onSolve={onSolve}
+        onValidate={onValidate}
+        ref={playGameActionsRef}
+      />
     </Box>
   );
 };

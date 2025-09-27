@@ -10,7 +10,13 @@ interface PlayGameHeaderProps {
 
 const PlayGameHeader = ({ difficulty }: PlayGameHeaderProps) => {
   return (
-    <Grid container justifyContent="center" alignItems="start" gap={2}>
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="start"
+      gap={2}
+      width="fit-content"
+    >
       <Typography
         variant="h3"
         color="primary"

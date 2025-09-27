@@ -1,23 +1,28 @@
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { useTheme } from "@mui/material/styles";
+import type { ReactNode } from "react";
 
 export interface ButtonGroupProps {
   value: number | string;
-  buttonLabels: { id: number | string; label: string }[];
+  buttonLabels: { id: number | string; label: ReactNode }[];
   onChange: (value: number | string) => void;
+  disabled?: boolean;
 }
 
 const CoreButtonGroup = ({
   value,
   buttonLabels,
   onChange,
+  disabled = false,
 }: ButtonGroupProps) => {
   const theme = useTheme();
   return (
     <ButtonGroup
+      disabled={disabled}
       variant="contained"
       sx={{
+        width: "100%",
         boxShadow: `0 4px 0 ${theme.palette.primary.main}, 0 8px 0 #000`,
         borderRadius: 2,
         overflow: "hidden",
@@ -30,6 +35,7 @@ const CoreButtonGroup = ({
             key={item.id}
             onClick={() => onChange(item.id)}
             sx={{
+              flex: 1,
               border: "none !important",
               fontFamily: theme.typography.fontFamily,
               fontSize: { xs: "0.6rem", sm: "0.75rem" },

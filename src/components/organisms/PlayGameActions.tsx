@@ -5,43 +5,42 @@ import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { resetGame } from "../../stores/boardSlice";
+import React from "react";
 
 interface PlayGameActionsProps {
   onSolve: () => void;
   onValidate: () => void;
-  onNewGame?: () => void;
 }
 
-const PlayGameActions = ({
-  onSolve,
-  onValidate,
-  onNewGame,
-}: PlayGameActionsProps) => {
-  const dispatch = useDispatch();
-  const internalOnNewGame = () => {
-    if (onNewGame) {
-      onNewGame();
-    } else {
+const PlayGameActions = React.forwardRef<HTMLDivElement, PlayGameActionsProps>(
+  ({ onSolve, onValidate }, ref) => {
+    const dispatch = useDispatch();
+    const internalOnNewGame = () => {
       dispatch(resetGame());
-    }
-  };
+    };
 
-  return (
-    <Grid container spacing={2} justifyContent="center" sx={{ mt: 2 }}>
-      <CoreButton style={{ marginTop: 32 }} onClick={onValidate}>
-        <TaskAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
-        Validate
-      </CoreButton>
-      <CoreButton style={{ marginTop: 32 }} onClick={onSolve}>
-        <AutoFixHighIcon sx={{ mr: 1, verticalAlign: "middle" }} />
-        Solve
-      </CoreButton>
-      <CoreButton style={{ marginTop: 32 }} onClick={internalOnNewGame}>
-        <RestartAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
-        New Game
-      </CoreButton>
-    </Grid>
-  );
-};
+    return (
+      <Grid
+        ref={ref}
+        container
+        spacing={2}
+        justifyContent="center"
+      >
+        <CoreButton style={{ marginTop: 32 }} onClick={onValidate}>
+          <TaskAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
+          Validate
+        </CoreButton>
+        <CoreButton style={{ marginTop: 32 }} onClick={onSolve}>
+          <AutoFixHighIcon sx={{ mr: 1, verticalAlign: "middle" }} />
+          Solve
+        </CoreButton>
+        <CoreButton style={{ marginTop: 32 }} onClick={internalOnNewGame}>
+          <RestartAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
+          New Game
+        </CoreButton>
+      </Grid>
+    );
+  }
+);
 
 export default PlayGameActions;
