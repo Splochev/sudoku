@@ -90,6 +90,7 @@ const StartGame = () => {
           buttonLabels={DIFFICULTIES}
           onChange={(value) => setDifficulty(String(value))}
           value={difficulty}
+          disabled={loading}
         />
       </Grid>
       <CoreButton

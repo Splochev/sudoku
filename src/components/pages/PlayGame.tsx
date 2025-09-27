@@ -74,12 +74,6 @@ const PlayGame = () => {
       setValidatingLoading(true);
       const response = await validateSudokuBoard({ board: solutionBoard });
       dispatch(setStatus(response.status));
-
-      if (response.status === "broken") {
-        setTimeout(() => {
-          dispatch(setStatus("solving"));
-        }, 3000);
-      }
     } catch (error) {
       console.error("Error fetching Sudoku board:", error);
       toast.error("Failed to validate game. Please try again.");
