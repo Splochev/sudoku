@@ -31,10 +31,10 @@ const StartGame = () => {
       if (!difficultyLevel) {
         toast.error("Invalid difficulty level");
       } else {
-        const { board } = await getSudokuBoard(difficultyLevel);
-        dispatch(setInitialBoard(board));
-        dispatch(setSolution(board));
-        dispatch(setDifficultyAction(difficultyLevel));
+        const response = await getSudokuBoard(difficultyLevel);
+        dispatch(setInitialBoard(response.data.board));
+        dispatch(setSolution(response.data.board));
+        dispatch(setDifficultyAction(response.difficulty));
       }
     } catch (error) {
       console.error("Error fetching Sudoku board:", error);

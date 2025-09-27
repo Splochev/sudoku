@@ -31,7 +31,7 @@ const encodeParams = (params: { board: Board }) =>
 
 export const getSudokuBoard = async (
   difficulty: Difficulty
-): Promise<BoardResponse> => {
+): Promise<{ data: BoardResponse; difficulty: Difficulty }> => {
   if (difficulty === DIFFICULTIES_MAP.RANDOM) {
     const difficulties: Difficulty[] = DIFFICULTIES_VALUES.filter(
       (d) => d !== DIFFICULTIES_MAP.RANDOM
@@ -41,7 +41,7 @@ export const getSudokuBoard = async (
   }
 
   const { data } = await axios.get(`${API_URL}/board?difficulty=${difficulty}`);
-  return data;
+  return { data, difficulty };
 };
 
 export const validateSudokuBoard = async (
