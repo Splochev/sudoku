@@ -11,10 +11,15 @@ interface PlayGameActionsProps {
   onSolve: () => void;
   onValidate: () => void;
   solvingLoading?: boolean;
+  validatingLoading?: boolean;
+  disableAll?: boolean;
 }
 
 const PlayGameActions = React.forwardRef<HTMLDivElement, PlayGameActionsProps>(
-  ({ onSolve, onValidate, solvingLoading }, ref) => {
+  (
+    { onSolve, onValidate, solvingLoading, validatingLoading, disableAll },
+    ref
+  ) => {
     const dispatch = useDispatch();
     const internalOnNewGame = () => {
       dispatch(resetGame());
@@ -25,7 +30,8 @@ const PlayGameActions = React.forwardRef<HTMLDivElement, PlayGameActionsProps>(
         <CoreButton
           style={{ marginTop: 32 }}
           onClick={onValidate}
-          disabled={solvingLoading}
+          disabled={disableAll || solvingLoading || validatingLoading}
+          loading={validatingLoading}
         >
           <TaskAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
           Validate
@@ -33,7 +39,7 @@ const PlayGameActions = React.forwardRef<HTMLDivElement, PlayGameActionsProps>(
         <CoreButton
           style={{ marginTop: 32 }}
           onClick={onSolve}
-          disabled={solvingLoading}
+          disabled={disableAll || solvingLoading || validatingLoading}
           loading={solvingLoading}
         >
           <AutoFixHighIcon sx={{ mr: 1, verticalAlign: "middle" }} />
@@ -42,7 +48,7 @@ const PlayGameActions = React.forwardRef<HTMLDivElement, PlayGameActionsProps>(
         <CoreButton
           style={{ marginTop: 32 }}
           onClick={internalOnNewGame}
-          disabled={solvingLoading}
+          disabled={solvingLoading || validatingLoading}
         >
           <RestartAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
           New Game

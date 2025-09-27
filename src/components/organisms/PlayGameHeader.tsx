@@ -6,15 +6,23 @@ import Typography from "@mui/material/Typography";
 
 interface PlayGameHeaderProps {
   difficulty: Difficulty;
+  status?: string;
 }
 
-const PlayGameHeader = ({ difficulty }: PlayGameHeaderProps) => {
+const STATUS_LABELS: Record<string, { label: string; color: string }> = {
+  solving: { label: "Solving", color: "#00d8ff" },
+  solved: { label: "Solved!", color: "#39FF14" },
+  broken: { label: "Incorrect", color: "#FF073A" },
+  unsolvable: { label: "Unsolvable", color: "#FF5C00" },
+};
+
+const PlayGameHeader = ({ difficulty, status }: PlayGameHeaderProps) => {
+  const statusObj = status ? STATUS_LABELS[status] : undefined;
   return (
     <Grid
       container
       justifyContent="center"
       alignItems="start"
-      gap={2}
       width="fit-content"
     >
       <Typography
@@ -22,6 +30,7 @@ const PlayGameHeader = ({ difficulty }: PlayGameHeaderProps) => {
         color="primary"
         gutterBottom
         fontWeight={700}
+        paddingRight={2}
         sx={{
           "@media (max-width:700px)": {
             fontSize: "2.5rem",
@@ -76,6 +85,41 @@ const PlayGameHeader = ({ difficulty }: PlayGameHeaderProps) => {
         }
       `}</style>
       </Box>
+      {statusObj && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            px: 2.5,
+            py: 0.7,
+            borderRadius: 2,
+            background: `linear-gradient(90deg, ${statusObj.color} 0%, #222 100%)`,
+            boxShadow: `0 2px 0 ${statusObj.color}, 0 4px 0 #000`,
+            border: `2px solid ${statusObj.color}`,
+            fontFamily: theme.typography.fontFamily,
+            fontSize: { xs: "0.9rem", sm: "1.1rem", md: "1.2rem" },
+            color: "#fff",
+            letterSpacing: 1.5,
+            textTransform: "uppercase",
+            textShadow: "0 2px 4px #000",
+            animation: "arcade-difficulty-flicker 1.2s infinite alternate",
+            userSelect: "none",
+            "@media (max-width:700px)": {
+              fontSize: "0.8rem",
+              px: 1.7,
+              py: 0.5,
+            },
+            "@media (max-width:480px)": {
+              fontSize: "0.6rem",
+              px: 1.2,
+              py: 0.4,
+            },
+          }}
+        >
+          {statusObj.label}
+        </Box>
+      )}
     </Grid>
   );
 };

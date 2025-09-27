@@ -20,7 +20,7 @@ const defaultState = {
   initialBoard: [] as Board,
   solution: [] as Board,
   difficulty: "easy" as "easy" | "medium" | "hard",
-  status: "solving" as "solving" | "success" | "fail",
+  status: "solving" as "solving" | "solved" | "broken" | "unsolvable",
 };
 
 const persistedState = loadState();

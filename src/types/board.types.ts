@@ -20,14 +20,16 @@ export type ValidateResponse = {
   status: "solved" | "broken";
 };
 
+export type BoardStatus = "solving" | "solved" | "broken" | "unsolvable";
+
 export type RootState = {
   board: {
     initialBoard: Board;
     solution: Board;
     difficulty: Difficulty;
+    status: BoardStatus;
   };
 };
-
 
 export type BoardNumber = {
   row: number;

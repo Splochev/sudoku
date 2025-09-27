@@ -16,6 +16,7 @@ const SudokuGrid = ({
   numberToFill,
   actionsWidth,
 }: SudokuGridProps) => {
+  const status = useSelector((state: RootState) => state.board.status);
   const [focusedCell, setFocusedCell] = useState<{
     row: number;
     col: number;
@@ -77,13 +78,15 @@ const SudokuGrid = ({
         row.map((cell, colIdx) => {
           const isInitial = cell > 0;
           const value = solution?.[rowIdx]?.[colIdx] || "";
+          // Disable all cells if game is over
+          const isGameOver = status === "solved" || status === "unsolvable";
           return (
             <Button
               key={`${rowIdx}-${colIdx}`}
               variant="contained"
-              disabled={isInitial}
+              disabled={isInitial || isGameOver}
               onClick={() => {
-                if (!isInitial) {
+                if (!isInitial && !isGameOver) {
                   setNumberToFill({ row: rowIdx, col: colIdx, value: -1 });
                   setFocusedCell({ row: rowIdx, col: colIdx });
                 }

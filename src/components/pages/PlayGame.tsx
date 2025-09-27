@@ -10,7 +10,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Grid, Typography } from "@mui/material";
 import SudokuGrid from "../organisms/SudokuGrid";
 import { toast } from "react-toastify";
-import { solveSudokuBoard } from "../../services/sudoku.service";
+import {
+  solveSudokuBoard,
+  validateSudokuBoard,
+} from "../../services/sudoku.service";
 import { setSolution, setStatus } from "../../stores/boardSlice";
 
 const NUMBER_OPTIONS = [
@@ -37,8 +40,10 @@ const PlayGame = () => {
   const initialBoard = useSelector(
     (state: RootState) => state.board.initialBoard
   );
+  const solutionBoard = useSelector((state: RootState) => state.board.solution);
   const dispatch = useDispatch();
   const difficulty = useSelector((state: RootState) => state.board.difficulty);
+  const status = useSelector((state: RootState) => state.board.status);
   const [actionsWidth, setActionsWidth] = useState<number | undefined>(
     undefined
   );
@@ -48,14 +53,15 @@ const PlayGame = () => {
     value: -1,
   });
   const [solvingLoading, setSolvingLoading] = useState<boolean>(false);
+  const [validatingLoading, setValidatingLoading] = useState<boolean>(false);
 
   const onSolve = async () => {
     try {
       setSolvingLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 5000));
       const response = await solveSudokuBoard({ board: initialBoard });
       dispatch(setSolution(response.solution));
       dispatch(setStatus(response.status));
+      toastifyStatus(response.status);
     } catch (error) {
       console.error("Error fetching Sudoku board:", error);
       toast.error("Failed to start game. Please try again.");
@@ -63,16 +69,38 @@ const PlayGame = () => {
       setSolvingLoading(false);
     }
   };
-  const onValidate = async () => {};
+
+  const onValidate = async () => {
+    try {
+      setValidatingLoading(true);
+      const response = await validateSudokuBoard({ board: solutionBoard });
+      dispatch(setStatus(response.status));
+      toastifyStatus(response.status);
+    } catch (error) {
+      console.error("Error fetching Sudoku board:", error);
+      toast.error("Failed to validate game. Please try again.");
+    } finally {
+      setValidatingLoading(false);
+    }
+  };
+
+  const toastifyStatus = (status: string) => {
+    if (status === "broken") {
+      toast.error("Some numbers are incorrect. Keep trying!");
+    } else if (status === "solved") {
+      toast.success("Congratulations! You solved the puzzle!");
+    } else if (status === "unsolvable") {
+      toast.error("The puzzle is unsolvable. Please try a different one!");
+    }
+  };
 
   const solution = useSelector((state: RootState) => state.board.solution);
   const onChange = (value: string | number) => {
     if (value === "clear") {
-      // If a cell is selected and has a value, clear it
       if (numberToFill.row > -1 && numberToFill.col > -1) {
         const currentValue = solution?.[numberToFill.row]?.[numberToFill.col];
         if (currentValue) {
-          setNumberToFill({ ...numberToFill, value: 0 }); // 0 means clear
+          setNumberToFill({ ...numberToFill, value: 0 });
         } else {
           setNumberToFill({ row: -1, col: -1, value: -1 });
         }
@@ -97,7 +125,9 @@ const PlayGame = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const disabled = numberToFill.col === -1 || numberToFill.row === -1;
+  const isGameOver = status === "solved" || status === "unsolvable";
+  const disabled =
+    isGameOver || numberToFill.col === -1 || numberToFill.row === -1;
   const numberOptions = isMdDown
     ? [NUMBER_OPTIONS.slice(0, 5), NUMBER_OPTIONS.slice(5)]
     : [NUMBER_OPTIONS];
@@ -120,7 +150,7 @@ const PlayGame = () => {
         alignItems: "center",
       }}
     >
-      <PlayGameHeader difficulty={difficulty} />
+      <PlayGameHeader difficulty={difficulty} status={status} />
       <SudokuGrid
         numberToFill={numberToFill}
         setNumberToFill={setNumberToFill}
@@ -149,6 +179,8 @@ const PlayGame = () => {
         onValidate={onValidate}
         ref={playGameActionsRef}
         solvingLoading={solvingLoading}
+        validatingLoading={validatingLoading}
+        disableAll={isGameOver}
       />
     </Box>
   );
