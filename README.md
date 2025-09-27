@@ -52,6 +52,21 @@ npm run build
 yarn build
 ```
 
+
+### Testing
+
+This project includes a comprehensive test suite for components, UI logic, and Redux state using Jest and React Testing Library.
+
+To run all tests:
+
+```bash
+npx jest
+# or
+npm test
+# or
+yarn test
+```
+
 ### Linting
 
 ```bash
