@@ -1,5 +1,16 @@
 {
-  "files": [],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "esModuleInterop": true
+  },
+  "files": [
+    "src/setupTests.ts",
+    "src/global.d.ts"
+  ],
+  "include": [
+    "src",
+    "src/__tests__"
+  ],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }

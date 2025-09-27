@@ -46,6 +46,7 @@ export default function CoreLoader({
         {ARCADE_COLORS.map((color, i) => (
           <Box
             key={color}
+            data-testid="arcade-loader-dot"
             sx={{
               position: "absolute",
               top: 0,
@@ -86,6 +87,7 @@ export default function CoreLoader({
       {ARCADE_COLORS.map((color, i) => (
         <Box
           key={color}
+          data-testid="arcade-loader-dot"
           sx={{
             width: 18,
             height: 18,
