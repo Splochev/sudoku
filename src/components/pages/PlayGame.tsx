@@ -9,6 +9,7 @@ import CoreButtonGroup from "../atoms/CoreButtonGroup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Grid } from "@mui/material";
+import SudokuGrid from "../organisms/SudokuGrid";
 
 const NUMBER_OPTIONS = [
   { id: 1, label: "1" },
@@ -20,22 +21,39 @@ const NUMBER_OPTIONS = [
   { id: 7, label: "7" },
   { id: 8, label: "8" },
   { id: 9, label: "9" },
-  { id: "clear", label: <ClearIcon sx={{ fontSize: "1rem" }} />},
+  { id: "clear", label: <ClearIcon sx={{ fontSize: "1rem" }} /> },
 ];
 
 const PlayGame = () => {
   const isMdDown = useMediaQuery("(max-width:480px)");
   const playGameActionsRef = useRef<HTMLDivElement>(null);
   const difficulty = useSelector((state: RootState) => state.board.difficulty);
-  const [actionsWidth, setActionsWidth] = useState<number | undefined>(undefined);
-  const [numberToFill, setNumberToFill] = useState<BoardNumber>({row: -1, col: -1, value: -1});
+  const [actionsWidth, setActionsWidth] = useState<number | undefined>(
+    undefined
+  );
+  const [numberToFill, setNumberToFill] = useState<BoardNumber>({
+    row: -1,
+    col: -1,
+    value: -1,
+  });
 
   const onSolve = async () => {};
   const onValidate = async () => {};
 
+  const solution = useSelector((state: RootState) => state.board.solution);
   const onChange = (value: string | number) => {
     if (value === "clear") {
-      setNumberToFill({ row: -1, col: -1, value: -1 });
+      // If a cell is selected and has a value, clear it
+      if (numberToFill.row > -1 && numberToFill.col > -1) {
+        const currentValue = solution?.[numberToFill.row]?.[numberToFill.col];
+        if (currentValue) {
+          setNumberToFill({ ...numberToFill, value: 0 }); // 0 means clear
+        } else {
+          setNumberToFill({ row: -1, col: -1, value: -1 });
+        }
+      } else {
+        setNumberToFill({ row: -1, col: -1, value: -1 });
+      }
       return;
     }
     setNumberToFill((prev) => ({ ...prev, value: Number(value) }));
@@ -55,7 +73,9 @@ const PlayGame = () => {
   }, []);
 
   const disabled = numberToFill.col === -1 || numberToFill.row === -1;
-  const numberOptions = isMdDown ? [NUMBER_OPTIONS.slice(0, 5), NUMBER_OPTIONS.slice(5)] : [NUMBER_OPTIONS];
+  const numberOptions = isMdDown
+    ? [NUMBER_OPTIONS.slice(0, 5), NUMBER_OPTIONS.slice(5)]
+    : [NUMBER_OPTIONS];
 
   return (
     <Box
@@ -76,6 +96,11 @@ const PlayGame = () => {
       }}
     >
       <PlayGameHeader difficulty={difficulty} />
+      <SudokuGrid
+        numberToFill={numberToFill}
+        setNumberToFill={setNumberToFill}
+        actionsWidth={actionsWidth}
+      />
       <Grid
         container
         sx={{
