@@ -27,3 +27,10 @@ export type RootState = {
     difficulty: Difficulty;
   };
 };
+
+
+export type BoardNumber = {
+  row: number;
+  col: number;
+  value: number;
+};
