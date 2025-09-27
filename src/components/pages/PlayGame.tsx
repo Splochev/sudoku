@@ -7,8 +7,7 @@ import PlayGameHeader from "../organisms/PlayGameHeader";
 import { useRef, useState, useLayoutEffect } from "react";
 import CoreButtonGroup from "../atoms/CoreButtonGroup";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import ClearIcon from "@mui/icons-material/Clear";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import SudokuGrid from "../organisms/SudokuGrid";
 
 const NUMBER_OPTIONS = [
@@ -21,7 +20,7 @@ const NUMBER_OPTIONS = [
   { id: 7, label: "7" },
   { id: 8, label: "8" },
   { id: 9, label: "9" },
-  { id: "clear", label: <ClearIcon sx={{ fontSize: "1rem" }} /> },
+  { id: "clear", label: <Typography sx={{ fontSize: "1rem", userSelect: "none" }}>X</Typography> },
 ];
 
 const PlayGame = () => {
