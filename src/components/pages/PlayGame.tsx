@@ -18,7 +18,12 @@ const PlayGame = () => {
   return (
     <Box
       sx={{
-        width: { xs: "95vw", sm: "80vw", md: "60vw", lg: "40vw" },
+        width: "650px",
+        "@media (max-width:700px)": {
+          width: "100vw !important",
+          minWidth: "100vw !important",
+          borderRadius: 0,
+        },
         maxWidth: 600,
         bgcolor: theme.palette.background.paper,
         borderRadius: 4,
