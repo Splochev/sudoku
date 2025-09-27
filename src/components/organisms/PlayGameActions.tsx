@@ -12,7 +12,11 @@ interface PlayGameActionsProps {
   onNewGame?: () => void;
 }
 
-const PlayGameActions = ({ onSolve, onValidate, onNewGame }: PlayGameActionsProps) => {
+const PlayGameActions = ({
+  onSolve,
+  onValidate,
+  onNewGame,
+}: PlayGameActionsProps) => {
   const dispatch = useDispatch();
   const internalOnNewGame = () => {
     if (onNewGame) {

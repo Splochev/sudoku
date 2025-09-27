@@ -7,7 +7,9 @@ import PlayGameHeader from "../atoms/DifficultyDisplay";
 
 const PlayGame = () => {
   const difficulty = useSelector((state: RootState) => state.board.difficulty);
-  const initialBoard = useSelector((state: RootState) => state.board.initialBoard);
+  const initialBoard = useSelector(
+    (state: RootState) => state.board.initialBoard
+  );
   const solution = useSelector((state: RootState) => state.board.solution);
 
   const onSolve = async () => {};

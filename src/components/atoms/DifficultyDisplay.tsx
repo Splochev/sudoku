@@ -18,27 +18,27 @@ const PlayGameHeader = ({ difficulty }: PlayGameHeaderProps) => {
         fontWeight={700}
         sx={{
           fontSize: {
-            xs: '2.4rem',
-            sm: '2.9rem',
-            md: '3.4rem',
+            xs: "2.4rem",
+            sm: "2.9rem",
+            md: "3.4rem",
           },
-          '@media (max-width:420px)': {
-            fontSize: '2.1rem',
+          "@media (max-width:420px)": {
+            fontSize: "2.1rem",
           },
-          '@media (max-width:410px)': {
-            fontSize: '1.95rem',
+          "@media (max-width:410px)": {
+            fontSize: "1.95rem",
           },
-          '@media (max-width:400px)': {
-            fontSize: '1.8rem',
+          "@media (max-width:400px)": {
+            fontSize: "1.8rem",
           },
-          '@media (max-width:390px)': {
-            fontSize: '1.65rem',
+          "@media (max-width:390px)": {
+            fontSize: "1.65rem",
           },
-          '@media (max-width:380px)': {
-            fontSize: '1.5rem',
+          "@media (max-width:380px)": {
+            fontSize: "1.5rem",
           },
-          '@media (max-width:375px)': {
-            fontSize: '1.4rem',
+          "@media (max-width:375px)": {
+            fontSize: "1.4rem",
           },
         }}
       >
@@ -66,33 +66,33 @@ const PlayGameHeader = ({ difficulty }: PlayGameHeaderProps) => {
           textShadow: "0 2px 4px #000",
           animation: "arcade-difficulty-flicker 1.2s infinite alternate",
           userSelect: "none",
-          '@media (max-width:420px)': {
-            fontSize: '1.1rem',
+          "@media (max-width:420px)": {
+            fontSize: "1.1rem",
             px: 2.6,
             py: 1,
           },
-          '@media (max-width:410px)': {
-            fontSize: '1.02rem',
+          "@media (max-width:410px)": {
+            fontSize: "1.02rem",
             px: 2.3,
             py: 0.9,
           },
-          '@media (max-width:400px)': {
-            fontSize: '0.95rem',
+          "@media (max-width:400px)": {
+            fontSize: "0.95rem",
             px: 2,
             py: 0.8,
           },
-          '@media (max-width:390px)': {
-            fontSize: '0.88rem',
+          "@media (max-width:390px)": {
+            fontSize: "0.88rem",
             px: 1.7,
             py: 0.7,
           },
-          '@media (max-width:380px)': {
-            fontSize: '0.8rem',
+          "@media (max-width:380px)": {
+            fontSize: "0.8rem",
             px: 1.4,
             py: 0.6,
           },
-          '@media (max-width:375px)': {
-            fontSize: '0.75rem',
+          "@media (max-width:375px)": {
+            fontSize: "0.75rem",
             px: 1.2,
             py: 0.5,
           },

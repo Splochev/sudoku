@@ -48,13 +48,13 @@ const CoreButton = ({
           color: theme.palette.background.default,
           boxShadow: `0 2px 0 ${theme.palette.primary.main}`,
         },
-        '@media (max-width:420px)': {
-          fontSize: '0.5rem',
+        "@media (max-width:420px)": {
+          fontSize: "0.5rem",
           px: 0.7,
           py: 0.3,
         },
-        '@media (max-width:400px)': {
-          fontSize: '0.47rem',
+        "@media (max-width:400px)": {
+          fontSize: "0.47rem",
           px: 0.6,
           py: 0.25,
         },
