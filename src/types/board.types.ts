@@ -24,5 +24,6 @@ export type RootState = {
   board: {
     initialBoard: Board;
     solution: Board;
+    difficulty: Difficulty;
   };
 };
