@@ -14,7 +14,6 @@ import theme from "../../theme";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { getSudokuBoard } from "../../services/sudoku.service";
 import { toast } from "react-toastify";
-import CoreLoader from "../atoms/CoreLoader";
 
 const StartGame = () => {
   const [difficulty, setDifficulty] = useState<string>(DIFFICULTIES[0].id);
@@ -78,15 +77,10 @@ const StartGame = () => {
         style={{ marginTop: 32 }}
         onClick={onStartGame}
         disabled={loading}
+        loading={loading}
       >
         <PlayArrowIcon sx={{ mr: 1, verticalAlign: "middle" }} />
         Start Game
-        {loading ? (
-          <CoreLoader
-            variant="circular"
-            sx={{ ml: 1, width: 20, height: 20 }}
-          />
-        ) : null}
       </CoreButton>
     </Box>
   );

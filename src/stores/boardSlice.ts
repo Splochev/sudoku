@@ -20,6 +20,7 @@ const defaultState = {
   initialBoard: [] as Board,
   solution: [] as Board,
   difficulty: "easy" as "easy" | "medium" | "hard",
+  status: "solving" as "solving" | "success" | "fail",
 };
 
 const persistedState = loadState();
@@ -29,6 +30,7 @@ const boardSlice = createSlice({
   initialState: persistedState || defaultState,
   reducers: {
     setInitialBoard(state, action) {
+      state.status = "solving";
       state.initialBoard = action.payload;
       saveState(state);
     },
@@ -46,10 +48,14 @@ const boardSlice = createSlice({
       state.difficulty = "easy";
       saveState(state);
     },
+    setStatus(state, action) {
+      state.status = action.payload;
+      saveState(state);
+    },
   },
 });
 
-export const { setInitialBoard, setSolution, setDifficulty, resetGame } =
+export const { setInitialBoard, setSolution, setDifficulty, resetGame, setStatus } =
   boardSlice.actions;
 
 export default boardSlice.reducer;

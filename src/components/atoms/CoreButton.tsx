@@ -8,7 +8,11 @@ export interface CoreButtonProps {
   style?: React.CSSProperties;
   sx?: object;
   disabled?: boolean;
+  loading?: boolean;
 }
+
+import React from "react";
+import CoreLoader from "./CoreLoader";
 
 const CoreButton = ({
   selected = false,
@@ -17,11 +21,12 @@ const CoreButton = ({
   style,
   sx = {},
   disabled = false,
+  loading = false,
 }: CoreButtonProps) => {
   const theme = useTheme();
   return (
     <Button
-      disabled={disabled}
+      disabled={disabled || loading}
       onClick={onClick}
       sx={{
         border: "none !important",
@@ -43,6 +48,8 @@ const CoreButton = ({
         boxShadow: `0 4px 0 ${theme.palette.primary.main}, 0 8px 0 #000`,
         transform: selected ? "translateY(2px)" : undefined,
         textShadow: "0 2px 4px #000",
+        position: "relative",
+        overflow: "hidden",
         "&:hover": {
           background: `linear-gradient(180deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
           color: theme.palette.background.default,
@@ -62,7 +69,26 @@ const CoreButton = ({
       }}
       style={style}
     >
-      {children}
+      <span style={{ opacity: loading ? 0.2 : 1 }}>{children}</span>
+      {loading && (
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 2,
+            background: "rgba(0,0,0,0.25)",
+            borderRadius: 8,
+          }}
+        >
+          <CoreLoader variant="horizontal" size={24} />
+        </span>
+      )}
     </Button>
   );
 };

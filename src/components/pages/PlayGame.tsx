@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import theme from "../../theme";
 import PlayGameActions from "../organisms/PlayGameActions";
 import type { BoardNumber, RootState } from "../../types/board.types";
@@ -9,6 +9,9 @@ import CoreButtonGroup from "../atoms/CoreButtonGroup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Grid, Typography } from "@mui/material";
 import SudokuGrid from "../organisms/SudokuGrid";
+import { toast } from "react-toastify";
+import { solveSudokuBoard } from "../../services/sudoku.service";
+import { setSolution, setStatus } from "../../stores/boardSlice";
 
 const NUMBER_OPTIONS = [
   { id: 1, label: "1" },
@@ -20,12 +23,21 @@ const NUMBER_OPTIONS = [
   { id: 7, label: "7" },
   { id: 8, label: "8" },
   { id: 9, label: "9" },
-  { id: "clear", label: <Typography sx={{ fontSize: "1rem", userSelect: "none" }}>X</Typography> },
+  {
+    id: "clear",
+    label: (
+      <Typography sx={{ fontSize: "1rem", userSelect: "none" }}>X</Typography>
+    ),
+  },
 ];
 
 const PlayGame = () => {
   const isMdDown = useMediaQuery("(max-width:480px)");
   const playGameActionsRef = useRef<HTMLDivElement>(null);
+  const initialBoard = useSelector(
+    (state: RootState) => state.board.initialBoard
+  );
+  const dispatch = useDispatch();
   const difficulty = useSelector((state: RootState) => state.board.difficulty);
   const [actionsWidth, setActionsWidth] = useState<number | undefined>(
     undefined
@@ -35,8 +47,22 @@ const PlayGame = () => {
     col: -1,
     value: -1,
   });
+  const [solvingLoading, setSolvingLoading] = useState<boolean>(false);
 
-  const onSolve = async () => {};
+  const onSolve = async () => {
+    try {
+      setSolvingLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      const response = await solveSudokuBoard({ board: initialBoard });
+      dispatch(setSolution(response.solution));
+      dispatch(setStatus(response.status));
+    } catch (error) {
+      console.error("Error fetching Sudoku board:", error);
+      toast.error("Failed to start game. Please try again.");
+    } finally {
+      setSolvingLoading(false);
+    }
+  };
   const onValidate = async () => {};
 
   const solution = useSelector((state: RootState) => state.board.solution);
@@ -122,6 +148,7 @@ const PlayGame = () => {
         onSolve={onSolve}
         onValidate={onValidate}
         ref={playGameActionsRef}
+        solvingLoading={solvingLoading}
       />
     </Box>
   );

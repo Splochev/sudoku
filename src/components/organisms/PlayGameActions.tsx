@@ -10,10 +10,11 @@ import React from "react";
 interface PlayGameActionsProps {
   onSolve: () => void;
   onValidate: () => void;
+  solvingLoading?: boolean;
 }
 
 const PlayGameActions = React.forwardRef<HTMLDivElement, PlayGameActionsProps>(
-  ({ onSolve, onValidate }, ref) => {
+  ({ onSolve, onValidate, solvingLoading }, ref) => {
     const dispatch = useDispatch();
     const internalOnNewGame = () => {
       dispatch(resetGame());
@@ -21,15 +22,28 @@ const PlayGameActions = React.forwardRef<HTMLDivElement, PlayGameActionsProps>(
 
     return (
       <Grid ref={ref} container spacing={2} justifyContent="center">
-        <CoreButton style={{ marginTop: 32 }} onClick={onValidate}>
+        <CoreButton
+          style={{ marginTop: 32 }}
+          onClick={onValidate}
+          disabled={solvingLoading}
+        >
           <TaskAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
           Validate
         </CoreButton>
-        <CoreButton style={{ marginTop: 32 }} onClick={onSolve}>
+        <CoreButton
+          style={{ marginTop: 32 }}
+          onClick={onSolve}
+          disabled={solvingLoading}
+          loading={solvingLoading}
+        >
           <AutoFixHighIcon sx={{ mr: 1, verticalAlign: "middle" }} />
           Solve
         </CoreButton>
-        <CoreButton style={{ marginTop: 32 }} onClick={internalOnNewGame}>
+        <CoreButton
+          style={{ marginTop: 32 }}
+          onClick={internalOnNewGame}
+          disabled={solvingLoading}
+        >
           <RestartAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
           New Game
         </CoreButton>
